@@ -1,125 +1,178 @@
-h1 React installed with Webpacker or Sprockets
-
-
-
-
-
-
-
-
-table.table
-  tr
-    th Webpacker
-    th Sprockets
-  tr
-    td
-      ul
-        li = '$ bundle install'
-        li = '$ rails webpacker:install       # OR (on rails version < 5.0) rake webpacker:install'
-        li = '$ rails webpacker:install:react # OR (on rails version < 5.0) rake webpacker:install:react'
-        li = '$ rails generate react:install'
-      ul
-        li = '$ rails generate react:install'
-
-  tr
-    td
-      ul
-        li
-          ul
-            li = 'app/assets/javascripts/application.js'
-            ul
-              li = 'Nothing'
-            li = 'app/assets/javascripts/components.js'
-            ul
-              li = 'Nothing'
-        li
-          = "'app/javascript/components' directory for your React components"
-          ul
-            li = 'var componentRequireContext = require.context("components", true);'
-            li = 'var ReactRailsUJS = require("react_ujs");'
-            li = 'ReactRailsUJS.useContext(componentRequireContext);'
-  = 'Your component is added to app/javascript/components/ by default.'
-  ul
-    li = 'rails g react:component HelloWorld greeting:string'
-    li = 'rails g react:component my_subdirectory/HelloWorld greeting:string'
-  = '<%= react_component("HelloWorld", { greeting: "Hello from react-rails." }) %>'
-  li
-    = "'ReactRailsUJS' setup in app/javascript/packs/application.js"
-  li
-    = "'app/javascript/packs/server_rendering.js' for server-side rendering"
-  td
-    ul
-      li
-        ul
-          li = 'app/assets/javascripts/application.js'
-          ul
-            li
-              = '//= require react'
-            li
-              = '//= require react_ujs'
-            li
-            = '//= require components'
-          li
-            = 'app/assets/javascripts/components.js'
-      li
-        = "'app/javascript/components' directory for your React components"
-        ul
-          li
-            = '//= require_tree ./components'
-      li
-        = "'app/javascript/server_rendering.js' for server-side rendering"
-
-
-  tr
-    td
-      ul
-        li
-          = "The 'require.context' inserted into 'packs/application.js' is used to load components."
-        li
-          = "If you want to load components from a different directory, override it by calling 'ReactRailsUJS.useContext'"
-    td
-  tr
-    td
-      = "If 'require' fails to find your component, 'ReactRailsUJS' falls back to the global namespace, described in 'Use with Asset Pipeline'."
-    td
-  tr
-    td
-      = "'react_component' call --> 'react_component('Item')'"
-      = "'component 'require'' --> 'require('Item')'"
-    td
-  tr
-    td
-      = 'File naming'
-      table.table
+.container
+  .row
+    .col-xs-12
+      h1.text-center React installed with Webpacker or Sprockets
+      br
+      br
+      table.table.table-bordered
         thead
           tr
-            th Component File Name
             th
-              code react_component
-              | call
+            th Webpacker
+            th Sprockets
         tbody
           tr
+            th
+              | Installation Process
             td
-              code app/javascript/components/samplecomponent.js
+              pre
+                = "gem 'webpacker'"
+                br
+                = "gem 'react-rails'"
+                br
+                br
+                = '$ bundle install'
+                br
+                = '$ rails webpacker:install       # OR (on rails version < 5.0) rake webpacker:install'
+                br
+                = '$ rails webpacker:install:react # OR (on rails version < 5.0) rake webpacker:install:react'
+                br
+                = '$ rails generate react:install'
             td
-              code react_component("samplecomponent")
+              pre
+                = '$ rails generate react:install'
+
           tr
+            th
+              | After Installed
             td
-              code app/javascript/components/sample_component.js
+              ol
+                li
+                  code app/assets/javascripts/application.js
+                  = ' --> No Setup'
+                li
+                  code app/assets/javascripts/components.js
+                  = ' --> Nothing'
+                li
+                  code app/javascript/components
+                  = ' directory for your React components'
+                  br
+                  br
+                  ul
+                    li
+                      strong Where
+                      br
+                      = 'Your component is added to '
+                      code app/javascript/components/
+                      = ' by default.'
+                      br
+                      br
+                    li
+                      strong How to Generate
+                      br
+                      pre
+                        = 'rails g react:component HelloWorld greeting:string'
+                        br
+                        = 'rails g react:component my_subdirectory/HelloWorld greeting:string'
+                      br
+                    li
+                      strong Usage
+                      br
+                      pre
+                        = '<%= react_component("HelloWorld", { greeting: "Hello from react-rails." }) %>'
+                        br
+                        = '<%= react_component("my_subdirectory/HelloWorld", { greeting: "Hello from react-rails." }) %>'
+                li
+                  code app/javascript/packs/application.js
+                  = ' with '
+                  strong ReactRailsUJS
+                  = ' setup'
+                  br
+                  br
+                  pre
+                    = 'var componentRequireContext = require.context("components", true);'
+                    br
+                    = 'var ReactRailsUJS = require("react_ujs");'
+                    br
+                    = 'ReactRailsUJS.useContext(componentRequireContext);'
+                li
+                  code app/javascript/packs/server_rendering.js
+                  = ' for '
+                  strong server-side rendering
+                  br
+                  br
+                  pre
+                    = 'var componentRequireContext = require.context("components", true);'
+                    br
+                    = 'var ReactRailsUJS = require("react_ujs");'
+                    br
+                    = '// ReactRailsUJS.useContext(componentRequireContext);'
             td
-              code react_component("sample_component")
+              ol
+                li
+                  code app/assets/javascripts/application.js
+                  br
+                  br
+                  pre
+                    = '//= require react'
+                    br
+                    = '//= require react_ujs'
+                    br
+                    = '//= require components'
+                  br
+                li
+                  code app/assets/javascripts/components.js
+                li
+                  code app/javascript/components
+                  = ' directory for your React components'
+                  br
+                  br
+                  pre
+                    = '//= require_tree ./components'
+                li
+                  code app/javascript/server_rendering.js
+                  = ' for server-side rendering'
+          /tr
+          /  td
+          /  td
+          /    ul
+          /      li
+          /        = "The 'require.context' inserted into 'packs/application.js' is used to load components."
+          /      li
+          /        = "If you want to load components from a different directory, override it by calling 'ReactRailsUJS.useContext'"
+          /  td
+          /tr
+          /  td
+          /  td
+          /    = "If 'require' fails to find your component, 'ReactRailsUJS' falls back to the global namespace, described in 'Use with Asset Pipeline'."
+          /  td
+          /tr
+          /  th
+          /  td
+          /    = "'react_component' call --> 'react_component('Item')'"
+          /    = "'component 'require'' --> 'require('Item')'"
+          /  td
           tr
+            th
+              | File naming
             td
-              code app/javascript/components/SampleComponent.js
+              table.table.table-bordered
+                thead
+                  tr
+                    th Component File Name
+                    th
+                      code react_component
+                      | call
+                tbody
+                  tr
+                    td
+                      code app/javascript/components/samplecomponent.js
+                    td
+                      code react_component("samplecomponent")
+                  tr
+                    td
+                      code app/javascript/components/sample_component.js
+                    td
+                      code react_component("sample_component")
+                  tr
+                    td
+                      code app/javascript/components/SampleComponent.js
+                    td
+                      code react_component("SampleComponent")
+                  tr
+                    td
+                      code app/javascript/components/SampleComponent.js.jsx
+                    td
+                      | Has to be renamed to SampleComponent.jsx, then use
+                      code react_component("SampleComponent")
             td
-              code react_component("SampleComponent")
-          tr
-            td
-              code app/javascript/components/SampleComponent.js.jsx
-            td
-              | Has to be renamed to SampleComponent.jsx, then use
-              code react_component("SampleComponent")
-    td
-  tr
-    td
-    td
